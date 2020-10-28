@@ -15,4 +15,11 @@ class TareaModel
         $stm->bindParam(":B", $data['descripcion']);
         return $stm->execute();
     }
+
+    public function getAllTareas()
+    {
+        $stm = Conexion::conector()->prepare("SELECT * FROM TAREAS");
+        $stm->execute();
+        return $stm->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
