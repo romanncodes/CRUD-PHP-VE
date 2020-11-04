@@ -28,10 +28,13 @@ class ControlInsert
         }
         $modelo = new TareaModel();
         $data = ["nombre" => $this->nombre, "descripcion" => $this->descripcion];
+
         $count = $modelo->insertarTarea($data);
+
         if ($count == 1) {
             $_SESSION['respuesta'] = "Tarea Creada con Exito";
         } else {
+
             $_SESSION['respuesta'] = "Hubo un error en la base de datos";
         }
         header("Location: ../index.php");

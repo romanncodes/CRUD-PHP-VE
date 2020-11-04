@@ -1,5 +1,6 @@
 <?php
 
+
 use models\TareaModel as TareaModel;
 
 require_once("models/TareaModel.php");
@@ -7,6 +8,15 @@ require_once("models/TareaModel.php");
 $modelo = new TareaModel();
 $tareas = $modelo->getAllTareas();
 
+$test = $modelo->buscarTarea(8);
+print_r($test);
+
+//$modelo->eliminarTarea(3);
+
+//$data = ['nombre' => 'TAREA EDITADA', 'descripcion' => 'GGGG'];
+//$modelo->editarTarea(1, $data);
+
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -22,47 +32,85 @@ $tareas = $modelo->getAllTareas();
 
 <body>
     <div class="container">
-        <h3 class="center">Gestion Tareas</h3>
         <div class="row">
             <div class="col l4 m6 s12 ">
-                <form action="controllers/ControlInsert.php" method="POST">
-                    <div class="input-field">
-                        <input id="nombre" type="text" name="nombre">
-                        <label for="nombre">Nombre de la Tarea</label>
-                    </div>
 
-                    <div class="input-field">
-                        <input id="descripcion" type="text" name="descripcion">
-                        <label for="descripcion">Descripción de la Tarea</label>
-                    </div>
+                <?php if (!isset($_SESSION['editar'])) { ?>
 
-                    <button class="btn">Guardar Tarea</button>
-                </form>
-                <p>
-                    <?php
-                    session_start();
-                    if (isset($_SESSION['respuesta'])) {
-                        echo $_SESSION['respuesta'];
-                        unset($_SESSION['respuesta']);
-                    }
-                    ?>
-                </p>
+                    <h4 class="center">Nueva Tarea</h4>
+                    <form action="controllers/ControlInsert.php" method="POST">
+                        <div class="input-field">
+                            <input id="nombre" type="text" name="nombre">
+                            <label for="nombre">Nombre de la Tarea</label>
+                        </div>
+
+                        <div class="input-field">
+                            <input id="descripcion" type="text" name="descripcion">
+                            <label for="descripcion">Descripción de la Tarea</label>
+                        </div>
+
+                        <button class="btn">Guardar Tarea</button>
+                    </form>
+                    <p>
+                        <?php
+                        //session_start();
+                        if (isset($_SESSION['respuesta'])) {
+                            echo $_SESSION['respuesta'];
+                            unset($_SESSION['respuesta']);
+                        }
+                        ?>
+                    </p>
+                <?php } else { ?>
+                    <!-- ----------------EDITAR TAREA------------------>
+                    <h4 class="center">Editar Tarea</h4>
+                    <form action="controllers/ControlEditar.php" method="POST">
+                        <input type="hidden" name="id" value="<?= $_SESSION['tarea']['id'] ?>">
+                        <div class="input-field">
+                            <input id="nombre" type="text" name="nombre" value="<?= $_SESSION['tarea']['nombre'] ?>">
+                            <label for="nombre">Nombre de la Tarea</label>
+                        </div>
+
+                        <div class="input-field">
+                            <input id="descripcion" type="text" name="descripcion" value="<?= $_SESSION['tarea']['descripcion'] ?>">
+                            <label for="descripcion">Descripción de la Tarea</label>
+                        </div>
+
+                        <button class="btn orange">Editar Tarea</button>
+                    </form>
+
+                <?php
+                }
+                unset($_SESSION['editar']);
+                unset($_SESSION['tarea']);
+                ?>
+
+
             </div>
             <div class="col l8 m6 s12 ">
-                <table border="1" class="ml-32">
-                    <tr>
-                        <th>ID</th>
-                        <th>Tarea</th>
-                        <th>Descripcion</th>
-                    </tr>
-                    <?php foreach ($tareas as $ta) {      ?>
+                <h4 class="center">Lista de Tareas</h4>
+
+                <form action="controllers/ControlTabla.php" method="POST">
+                    <table border="1" class="ml-32">
                         <tr>
-                            <td> <?= $ta["id"] ?> </td>
-                            <td> <?= $ta["nombre"] ?> </td>
-                            <td> <?= $ta["descripcion"] ?> </td>
+                            <th>ID</th>
+                            <th>Tarea</th>
+                            <th>Descripcion</th>
+                            <th></th>
                         </tr>
-                    <?php   }   ?>
-                </table>
+                        <?php foreach ($tareas as $ta) {      ?>
+                            <tr>
+                                <td> <?= $ta["id"] ?> </td>
+                                <td> <?= $ta["nombre"] ?> </td>
+                                <td> <?= $ta["descripcion"] ?> </td>
+                                <td>
+                                    <button name="bt_edit" value="<?= $ta["id"] ?>" class="btn orange">Editar</button>
+                                    <button name="bt_delete" value="<?= $ta["id"] ?>" class="btn red">Eliminar</button>
+                                </td>
+
+                            </tr>
+                        <?php   }   ?>
+                    </table>
+                </form>
             </div>
         </div>
 
