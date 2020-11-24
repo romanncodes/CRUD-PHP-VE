@@ -115,14 +115,51 @@ session_start();
         </div>
 
 
+        <hr>
+
+        <!-- MODULO BUSCAR --->
+        <div class="row">
+            <div class="col l6">
+                <h4>buscar</h4>
+                <form action="controllers/ControlBuscar.php" method="POST">
+                    <input type="text" name="id" placeholder="Ingrese ID">
+                    <button class="btn">Buscar</button>
+                </form>
+            </div>
+            <div class="col l6">
+                <p class="red-text  ">
+                    <?php
+                    if (isset($_SESSION['error_buscar'])) {
+                        echo $_SESSION['error_buscar'];
+                        unset($_SESSION['error_buscar']);
+                    }
+                    ?>
+
+                    <?php
+                    if (isset($_SESSION['tarea_buscar'])) { ?>
+                        <ul class="collection">
+                            <li class="collection-item"><?= $_SESSION['tarea_buscar']['id'] ?></li>
+                            <li class="collection-item"><?= $_SESSION['tarea_buscar']['nombre'] ?></li>
+                            <li class="collection-item"><?= $_SESSION['tarea_buscar']['descripcion'] ?></li>
+                        </ul>
+
+                    <?php
+                        unset($_SESSION['tarea_buscar']);
+                    } ?>
+
+                </p>
+            </div>
+
+
+
+        </div>
 
 
 
 
 
 
-
-    </div>
+    </div> <!-- CONTAINER -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 

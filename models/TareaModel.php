@@ -29,7 +29,7 @@ class TareaModel
         $stm = Conexion::conector()->prepare("SELECT * FROM tareas WHERE id=:A");
         $stm->bindParam(":A", $id);
         $stm->execute();
-        return $stm->fetchAll(\PDO::FETCH_ASSOC);
+        return $stm->fetchAll(\PDO::FETCH_ASSOC); //
     }
 
     //DELETE FROM TAREAS WHERE ID = ?
