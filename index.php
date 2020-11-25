@@ -149,20 +149,44 @@ session_start();
 
                 </p>
             </div>
-
-
-
         </div>
 
 
+        <!-- CARGAR TAREAS EN COMBOBOX Y EN EL VALUE DEL OPTION DEJAR EL ID-->
 
+        <h4>Cargar Combobox</h4>
+        <select name="xx">
+            <?php foreach ($tareas as $tarea) { ?>
+                <option value="<?= $tarea['id'] ?>"> <?= $tarea['nombre'] ?></option>
+            <?php } ?>
+        </select>
+
+        <!--  
+
+             Para el trabajo:
+             1. Crear el modelo RecetaModel
+             2. esta clase debe tener metodos como:
+                 getAllMaterialCristal()  - select * from material_cristal
+                 getAllArmazon()          - select * from armazon
+                 getAllTipoCristal()      - select * from tipo_cristal
+                 ----
+                 buscarRecetaRut($rut)     - select * from receta where rut_cliente = :A
+                 buscarRecetaFecha($fecha) - select * from recete where fecha_entrega = :A
+                 insertarReceta
+
+            -->
 
 
 
     </div> <!-- CONTAINER -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+    </script>
 </body>
 
 </html>
